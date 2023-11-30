@@ -11,10 +11,10 @@
 #include "smm_database.h"
 #include "smm_common.h"
 
+
 #define BOARDFILEPATH "marbleBoardConfig.txt"
 #define FOODFILEPATH "marbleFoodConfig.txt"
 #define FESTFILEPATH "marbleFestivalConfig.txt"
-#define MAX_NODE 100
 
 //board configuration parameters
 static int board_nr;
@@ -22,9 +22,24 @@ static int food_nr;
 static int festival_nr;
 
 static int player_nr;
+
+// player 변수를 구조체로 정의 
+typedef struct player
+{
+      int energy;
+      int position;
+      char name[MAX_CHARNAME];    
+      int accumCredit;
+      int flag_graduate;
+} player_t;
+
+struct player_t cur_player[MAX_PLAYER];
+
+#if 0
 static int player_energy[MAX_PLAYER];
 static int player_position[MAX_PLAYER];
 static char player_name[MAX_PLAYER][MAX_CHARNAME];
+#endif
 
 //function prototypes
 #if 0
@@ -39,16 +54,31 @@ void* findGrade(int player, char *lectureName); //find the grade from the player
 void printGrades(int player); //print all the grade history of the player
 #endif
 
-void generate players(int n, int initEnergy)
+void printPlayerStatus(void)
 {
      int i;
      
+     for(i=0; i<n)
+     
+}
+
+void generatePlayers(int n, int initEnergy)
+{
+     int i;
+     
+     //n time loop     
      for(i=0;i<n;i++)
      {
-         printf();
+         //input name
+         printf("Input player %i's name : ", i);
+         //구조체로 변경
+         scanf("%s",cur_player.name[i]);
+         #if 0
          scanf("%s",player_name[i]);
+         
          player_position[i] = 0;
          player_energy[i] = 0;
+         #endif
      }     
 }
 
@@ -92,6 +122,7 @@ int main(int argc, const char * argv[]) {
     int credit;
     int energy;
     int i;
+    int initEnergy;
     
     board_nr = 0;
     food_nr = 0;
@@ -114,13 +145,17 @@ int main(int argc, const char * argv[]) {
     {
         //store the parameter set
         smmObj_genNode(name, type, credit, energy);
+        if(type == SMMNODE_TYPE_HOME)
+                initEnergy = energy;
         board_nr++;
     }
     fclose(fp);
     printf("Total number of board nodes : %i\n", board_nr);
     
     for (i = 0;i<board_nr;i++)
-        printf("node %i : %s, %i(%s)\n", i, smmObj_getNodeName(i), smmObj_getNodeType(i), smmObj_getTypeName);
+        printf("node %i : %s, %i(%s), credit %i, energy %i\n", i, smmObj_getNodeName(i), smmObj_getNodeType(i), smmObj_getNodeType(i), smm_getTypeName(smmm_getNodeType(i)), smmObj_getNodeCredit(i), smmmObj_getNodeEnergy(i));
+    
+    printf("(%s)", smmOhj_getTypeName(SMMMODE_TYPE_LECTURE)); 
     
     #if 0
     //2. food card config 
@@ -156,6 +191,7 @@ int main(int argc, const char * argv[]) {
     printf("Total number of festival cards : %i\n", festival_nr);
     
     
+    #endif
     
     //2. Player configuration ---------------------------------------------------------------------------------
     /*
@@ -163,7 +199,7 @@ int main(int argc, const char * argv[]) {
     {
         //input player number to player_nr
     }
-    while ((plqyer_nr<0) || (player > MAX_PLAYER));
+    while ((plqyer_nr<0) || (player_nr > MAX_PLAYER));
     generatePlayers();
     */
     /*
@@ -173,6 +209,7 @@ int main(int argc, const char * argv[]) {
     //-> do while 문으로 넣기 
     */
     
+    #if 0
     //3. SM Marble game starts ---------------------------------------------------------------------------------
     while () //is anybody graduated?
     {
