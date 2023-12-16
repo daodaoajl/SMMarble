@@ -15,12 +15,12 @@
 
 static char smmNodeName[SMMMODE_TYPE_MAX][MAX_CHARNAME] = 
 {
- "lecture"
- "restautant"
- "lab"
- "home"
- "go to lab"
- "food chance"
+ "lecture",
+ "restautant",
+ "lab",
+ "home",
+ "go to lab",
+ "food chance",
  "festival"
 }
 
@@ -28,15 +28,6 @@ char* smmObj_getTypeName(int type)
 {
  return (char*)smmNodeName[type];    
 }
-#if 0
-//11/30 -> 기존 배열의 구조체 화 
-static char smmObj_name[MAX_NODE][MAX_CHARNAME];
-static int smmObj_type[MAX_NODE];
-static int smmObj_credit[MAX_NODE];
-static int smmObj_energy[MAX_NODE];
-static int smmObj_noNode=0;
-#endif
-//컴파일 되지 않음
 
 typedef enum smmObjType
 {
@@ -71,7 +62,7 @@ typedef struct smmObject
 //
 
 //2. 구조체 배열 변수 정의
-struct smmObject smm_node[MAX_NODE];
+//struct smmObject smm_node[MAX_NODE];
  
 
 
@@ -98,7 +89,7 @@ void smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, in
 char* smmObj_getNodeName(void* obj)
 {
     smmObject_t* ptr = (smmObject_t*)obj;
-    return ptr->name
+    return ptr->name;
 }
 
 int smmObj_getNodeType(int node_nr)
@@ -115,20 +106,3 @@ int smmObj_getNodeEnergy(int node_nr)
 {
     return smm_node[node_nr].energy;    
 }
-
-#if 0
-
-//member retrieving
-
-//element to string
-char* smmObj_getNodeName(smmNode_e type)
-{
-    return smmNodeName[type];
-}
-
-char* smmObj_getGradeName(smmGrade_e grade)
-{
-    return smmGradeName[grade];
-}
-
-#endif

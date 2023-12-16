@@ -11,7 +11,6 @@
 #include "smm_database.h"
 #include "smm_common.h"
 
-
 #define BOARDFILEPATH "marbleBoardConfig.txt"
 #define FOODFILEPATH "marbleFoodConfig.txt"
 #define FESTFILEPATH "marbleFestivalConfig.txt"
@@ -33,7 +32,7 @@ typedef struct player
       int flag_graduate;
 } player_t;
 
-struct player_t cur_player[MAX_PLAYER];
+struct player_t* cur_player;
 
 #if 0
 static int player_energy[MAX_PLAYER];
@@ -54,15 +53,33 @@ void* findGrade(int player, char *lectureName); //find the grade from the player
 void printGrades(int player); //print all the grade history of the player
 #endif
 
+void printGrades(int player)
+{
+     int i;
+     void* gradePtr;
+     
+     for (i=0;i<smmdb_len(LISTNO_OGGSET_GRADE + player);i++)
+     {
+         gradePtr = smmdb_getData(LISTNO_OFFSET_GRADE + player, i);
+         printf("%s : %i\n", smmObj_getNodeName(gradePtr), smmObj_getNodeGrade(gradePtr));
+     }     
+}
 void printPlayerStatus(void)
 {
      int i;
      
-//     for(i=0; i<n)
+     for(i=0;i<player_nr;i++)
+     {                       
+        printf("%s : credit %i, energy %i, position %i\n",
+                   cur_player[i].name,
+                   cur_player[i].accumCredit,
+                   cur_player[i].energy,
+                   cur_player[i].position);
+     }
      
 }
 
-void generatePlayers(int n, int initEnergy)
+void generatePlayers(int n, int initEnergy) //generate a new player
 {
      int i;
      
@@ -71,14 +88,20 @@ void generatePlayers(int n, int initEnergy)
      {
          //input name
          printf("Input player %i's name : ", i);
+         scnaf("%s",cur_player[i].name);
+         fflush(stdin);
          //구조체로 변경
-         //scanf("%s",cur_player.name[i]);
-         #if 0
-         scanf("%s",player_name[i]);
          
-         player_position[i] = 0;
-         player_energy[i] = 0;
-         #endif
+         //set position
+         // player_position[i] = 0;
+         
+         cur_player[i].position = 0;
+         
+         //set energy
+         //player_energy[i] = initEnergy;
+         cur_player[i].energy = initEnergy;
+         cur_player[i].accumCredit = 0;
+         cur_player[i].flag_graduate = 0;
      }     
 }
 
@@ -99,18 +122,45 @@ int rolldie(int player)
     return (rand()%MAX_DIE + 1);
 }
 
-#if 0
+
 //action code when a player stays at a node
 void actionNode(int player)
 {
+    void* boardPtr = smmdb_getData(LISTNO_NODE, cur_player[player].position);
+    // int type = smmObj_getNodeType(cur_player[player].position);
+    int type = smmObj_getNodeType(boardPtr);
+    char* name = smmObj_getNodeNave(boardPtr);
+    void* gradePtr;
+    
     switch(type)
     {
         //case lecture:
+        case SMMNODE_TYPE_LECTURE:
+             if
+             cur_player[player].accumCredit += smmObj_getNodeCredit(boardPtr);
+             cur_player[player].energy -= smmObj_getNodeEnergy(boardPtr);
+             
+             //grade generation
+             gradePtr = smmObj_genObject(name, smmObjType_grade, 0, smmObj_getNodeCredit(boardPtr), 0,??);
+             smmdb_addTail(LISTNO_OFFSET_GRADE + player, gradePtr);
+             
+             break;
+             
         default:
             break;
     }
 }
-#endif
+
+void goForward(int player, int step)
+{
+     void* boardPtr;
+     cur_player[player].position += step;
+     boardPtr = smmdb_getData(LISTNO_NODE, cur_player[player].position);
+     
+     printf("%s go to node %i (name: %s)\n",
+                cur_player[player].name, cur_player[player].position,
+                smmObj_getNodeName(boardPtr));   
+}
 
 
 
@@ -123,6 +173,8 @@ int main(int argc, const char * argv[]) {
     int energy;
     int i;
     int initEnergy;
+    int turn = 0;
+    
     
     board_nr = 0;
     food_nr = 0;
@@ -144,7 +196,9 @@ int main(int argc, const char * argv[]) {
     while ( fscanf(fp, "%s %i %i %i", name, &type, &credit, &energy) == 4 ) //read a node parameter set
     {
         //store the parameter set
-        smmObj_genObject(name, smmObjType_board, type, credit, energy, 0);
+        void* boardObj = smmObj_genObject(name, smmObjType_board, type, credit, energy, 0);
+        smmdb_addTail(LISTNO_NODE, boardObj);
+        
         if(type == SMMNODE_TYPE_HOME)
                 initEnergy = energy;
         board_nr++;
@@ -153,9 +207,14 @@ int main(int argc, const char * argv[]) {
     printf("Total number of board nodes : %i\n", board_nr);
     
     for (i = 0;i<board_nr;i++)
-        printf("node %i : %s, %i(%s), credit %i, energy %i\n", i, smmObj_getNodeName(i), smmObj_getNodeType(i), smmObj_getNodeType(i), smm_getTypeName(smmm_getNodeType(i)), smmObj_getNodeCredit(i), smmmObj_getNodeEnergy(i));
+    {
+        void* boardObj = smmdb_getData(LISTNO_NODE, i);
+        
+        printf("node %i : %s, %i(%s), credit %i, energy %i\n", i, smmObj_getNodeName(boardObj), smmObj_getNodeType(boardObj), smmObj_getNodeType(i), smm_getTypeName(smmm_getNodeType(boardObj)), smmObj_getNodeCredit(boardObj), smmmObj_getNodeEnergy(boardObj));
     
-    printf("(%s)", smmOhj_getTypeName(SMMMODE_TYPE_LECTURE)); 
+    //printf("(%s)", smmOhj_getTypeName(SMMMODE_TYPE_LECTURE)); 
+    }
+    
     
     #if 0
     //2. food card config 
@@ -198,18 +257,16 @@ int main(int argc, const char * argv[]) {
     do
     {
         //input player number to player_nr
+        printf("input player no.:");
+        scanf("%d", &player_nr);
+        fflush(stdin);
     }
     while ((plqyer_nr<0) || (player_nr > MAX_PLAYER));
-    generatePlayers();
     
-    /*
-    printf("input player number:");
-    scanf("%d",&player_nr);
+    cur_player = (player_t*)malloc(player_nr*sizeof(player_t));
     generatePlayers(player_nr, initEnergy);
-    //-> do while 문으로 넣기 
-    */
     
-    #if 0
+    
     //3. SM Marble game starts ---------------------------------------------------------------------------------
     while () //is anybody graduated?
     {
@@ -219,18 +276,19 @@ int main(int argc, const char * argv[]) {
         //printPlayerStatus();
         
         //4-2. die rolling (if not in experiment)
-        
+        die_result = rolldie(turn);
         
         //4-3. go forward
-        //goForward();
+        goForward(turn, die_result);
 
 		//4-4. take action at the destination node of the board
-        //actionNode();
+        actionNode(turn);
         
         //4-5. next turn
-        
+        turn = (turn +1)%player_nr;
     }
-    #endif
+    
+    free(cur_player);
     system("PAUSE");
     return 0;
 }

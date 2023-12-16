@@ -21,7 +21,7 @@
 
 typedef enum smmObjType
 {
-        smmObjType_board = 0;
+        smmObjType_board = 0,
         smmObjType_card,
         smmObjType_grade
         }smmObjType_e;
