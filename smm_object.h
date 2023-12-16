@@ -37,7 +37,7 @@ typedef enum smmObjGrade
         smmObjGrade_Cp,
         smmObjGrade_C0,
         smmObjGrade_Cm
-        }smmObjGrade_e;//Ziral
+        }smmObjGrade_e;
 
 /* node type :
     lecture,
