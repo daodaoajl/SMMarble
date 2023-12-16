@@ -58,7 +58,7 @@ void printPlayerStatus(void)
 {
      int i;
      
-     for(i=0; i<n)
+//     for(i=0; i<n)
      
 }
 
@@ -72,7 +72,7 @@ void generatePlayers(int n, int initEnergy)
          //input name
          printf("Input player %i's name : ", i);
          //구조체로 변경
-         scanf("%s",cur_player.name[i]);
+         //scanf("%s",cur_player.name[i]);
          #if 0
          scanf("%s",player_name[i]);
          
@@ -144,7 +144,7 @@ int main(int argc, const char * argv[]) {
     while ( fscanf(fp, "%s %i %i %i", name, &type, &credit, &energy) == 4 ) //read a node parameter set
     {
         //store the parameter set
-        smmObj_genNode(name, type, credit, energy);
+        smmObj_genObject(name, smmObjType_board, type, credit, energy, 0);
         if(type == SMMNODE_TYPE_HOME)
                 initEnergy = energy;
         board_nr++;
@@ -194,14 +194,14 @@ int main(int argc, const char * argv[]) {
     #endif
     
     //2. Player configuration ---------------------------------------------------------------------------------
-    /*
+    
     do
     {
         //input player number to player_nr
     }
     while ((plqyer_nr<0) || (player_nr > MAX_PLAYER));
     generatePlayers();
-    */
+    
     /*
     printf("input player number:");
     scanf("%d",&player_nr);
