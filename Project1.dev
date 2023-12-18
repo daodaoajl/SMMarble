@@ -18,7 +18,7 @@ Icon=
 ExeOutput=
 ObjectOutput=
 OverrideOutput=0
-OverrideOutputName=
+OverrideOutputName=Project1.exe
 HostApplication=
 Folders=
 CommandLine=
@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=
+CompilerSettings=0000000000000001000000
 
 [Unit1]
 FileName=main.c
@@ -70,11 +70,11 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit5]
-FileName=smm_object.h
+FileName=marbleBoardConfig.txt
 CompileCpp=0
 Folder=Project1
-Compile=1
-Link=1
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
@@ -98,15 +98,6 @@ ProductVersion=
 AutoIncBuildNr=0
 
 [Unit6]
-FileName=marbleBoardConfig.txt
-Folder=Project1
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit7]
 FileName=marbleFestivalConfig.txt
 Folder=Project1
 Compile=0
@@ -115,7 +106,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit8]
+[Unit7]
 FileName=marbleFoodConfig.txt
 Folder=Project1
 Compile=0
@@ -124,10 +115,20 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit9]
+[Unit8]
 FileName=smm_common.h
-CompileCpp=0
 Folder=Project1
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+CompileCpp=0
+
+[Unit9]
+FileName=smm_object.h
+CompileCpp=0
+Folder=
 Compile=1
 Link=1
 Priority=1000

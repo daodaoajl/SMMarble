@@ -22,19 +22,19 @@ static char smmNodeName[SMMMODE_TYPE_MAX][MAX_CHARNAME] =
  "go to lab",
  "food chance",
  "festival"
-}
+};
 
 char* smmObj_getTypeName(int type)
 {
  return (char*)smmNodeName[type];    
 }
 
-typedef enum smmObjType
+/*typedef enum smmObjType
 {
         smmObjType_board = 0;
         smmObjType_card,
         smmObjType_grade
-        }smmObjType_e;
+        } smmObjType_e;
         
 typedef enum smmObjGrade
 {
@@ -47,8 +47,8 @@ typedef enum smmObjGrade
         smmObjGrade_Cp,
         smmObjGrade_C0,
         smmObjGrade_Cm
-        }smmObjGrade_e;
-
+        } smmObjGrade_e;
+*/
 // 1. 구조체 배열 변수 정의 
 typedef struct smmObject 
 {
@@ -58,7 +58,7 @@ typedef struct smmObject
        int  credit;   
        int  energy;  
        smmObjGrade_e grade;
-}smmObject_t;
+} smmObject_t;
 //
 
 //2. 구조체 배열 변수 정의
@@ -72,7 +72,7 @@ void smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, in
 {
     smmObject_t* ptr;
     
-    ptr = smmObject_t*)malloc(sizeof(smmObject_t));
+    ptr = (smmObject_t*)malloc(sizeof(smmObject_t));
     
     strcpy(ptr->name, name);
     ptr->objType = objType;
@@ -81,7 +81,7 @@ void smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, in
     ptr->energy = energy;
     ptr->grade = grade;
     
-    retrun ptr;
+    return ptr;
 
 }
 
@@ -106,3 +106,4 @@ int smmObj_getNodeEnergy(int node_nr)
 {
     return smm_node[node_nr].energy;    
 }
+
