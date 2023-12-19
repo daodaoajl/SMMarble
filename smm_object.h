@@ -69,13 +69,15 @@ void smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, in
 
 //member retrieving
 char* smmObj_getNodeName(void* obj);//int node_nr -> void* obj ±∏¡∂ ∏¬√Á¡‹(12/18) 
-int smmObj_getNodeType(void*);
-int smmObj_getNodeCredit(void*);
-int smmObj_getNodeEnergy(void*);
+int smmObj_getNodeType(void* Ptr);
+int smmObj_getNodeCredit(void* Ptr);
+int smmObj_getNodeEnergy(void* Ptr);
+int smmObj_getNodeGrade(void* Ptr);
 
 //element to string
 
 char* smmObj_getTypeName(int type);
+//printgrade, rolldie, goforward, actionNode, getNodeName
 
 
 #endif /*smm_object_h*/

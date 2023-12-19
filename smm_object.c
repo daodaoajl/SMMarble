@@ -81,29 +81,37 @@ void smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, in
     ptr->energy = energy;
     ptr->grade = grade;
     
-    return ptr;
+//    return ptr;
 
 }
 
-//12/7 관련함수 변경 
+//12/20 관련함수 변경 
 char* smmObj_getNodeName(void* obj)
 {
     smmObject_t* ptr = (smmObject_t*)obj;
     return ptr->name;
 }
 
-int smmObj_getNodeType(int node_nr)
+int smmObj_getNodeType(void* Ptr)
 {
-    return smm_node[node_nr].type;
+    smmObject_t* ptr = (smmObject_t*)Ptr;
+    return ptr->type;
 }
 
-int smmObj_getNodeCredit(int node_nr)
+int smmObj_getNodeCredit(void* Ptr)
 {
-    return smm_node[node_nr].credit;
+    smmObject_t* ptr = (smmObject_t*)Ptr;
+    return ptr->credit;
 }
 
-int smmObj_getNodeEnergy(int node_nr)
+int smmObj_getNodeEnergy(void* Ptr)
 {
-    return smm_node[node_nr].energy;    
+    smmObject_t* ptr = (smmObject_t*)Ptr;
+    return ptr->energy;    
 }
 
+int smmObj_getNodeGrade(void* Ptr)
+{
+    smmObject_t* ptr = (smmObject_t*)Ptr;
+    return ptr->grade;    
+}

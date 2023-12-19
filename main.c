@@ -146,19 +146,67 @@ void actionNode(int players)
     {
         //case lecture:
         case SMMMODE_TYPE_LECTURE:
-             if
-             player[players].accumCredit += smmObj_getNodeCredit(boardPtr);
-             player[players].energy -= smmObj_getNodeEnergy(boardPtr);
+             if(player[players].energy >= smmObj_getNodeEnergy(boardPtr))
+             {
+                int jod;//join or drop
+                char jd[3];
+                printf("%s, join of drop?",name);
+                scanf("%s",&jd[3]);
              
-             //grade generation
-             //smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, int energy, smmObjGrade_e grade)
-             gradePtr = smmObj_genObject(name, smmObjType_grade, 0, smmObj_getNodeCredit(boardPtr), 0,(smmObjGrade_e)grade);
-             smmdb_addTail(LISTNO_OFFSET_GRADE + player, gradePtr);
-             
+                if(strcmp(jd[3],"join")==0)
+                     {jod = 1};
+                else if(strcmp(jd[3],"drop")==-1)
+                     {jod = 0};
+                else
+                     {scanf("%s",&jd[3])};
+                        
+                if(jod == 1)
+                {
+                       player[players].accumCredit += smmObj_getNodeCredit(boardPtr);
+                       player[players].energy -= smmObj_getNodeEnergy(boardPtr);
+                       //grade generation
+                       //smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, int energy, smmObjGrade_e grade)
+                       gradePtr = smmObj_genObject(name, smmObjType_grade, 0, smmObj_getNodeCredit(boardPtr), 0,(smmObjGrade_e)grade);
+                       smmdb_addTail(LISTNO_OFFSET_GRADE + player, gradePtr);
+                }// energy가 노드의 energy보다 높을 때 실행 
+             else
+                 printf("you are too hungry to take the lecture %s(remained : %i, required: %i)",name,smmObj_getNodeEnergy(boardPtr),player[players].energy);
+             }
              break;
+        //case restaurant
+        case SMMMODE_TYPE_RESTAURANT:
              
+             player[players].energy += smmObj_getNodeEnergy(boardPtr);  
+             break;
+        //case laboratory     
+        case SMMMODE_TYPE_LABORATORY:
+        //->
+             break;
+        case SMMMODE_TYPE_HOME:
+             if(smmNodeName[3][])
+             {
+                                 
+             }
+             break;
+        case SMMMODE_TYPE_EXPERIMENT:
+             if(smmNodeName[4][])
+             {
+                                 
+             }
+             break;
+        case SMMMODE_TYPE_FOODCHANCE:
+             if(smmNodeName[5][])
+             {
+                                 
+             }
+             break;
+        case SMMMODE_TYPE_FESTIVAL:
+             if(smmNodeName[6][])
+             {
+                                 
+             }
+             break;
         default:
-        //another case 
             break;
     }
 #endif
@@ -225,7 +273,7 @@ int main(int argc, const char * argv[]) {
     {
         void* boardObj = smmdb_getData(LISTNO_NODE, i);
         
-        printf("node %i : %s, %i(%s), credit %i, energy %i\n", i, smmObj_getNodeName(boardObj), smmObj_getNodeType(boardObj), smm_getTypeName(smmm_getNodeType(boardObj)), smmObj_getNodeCredit(boardObj), smmmObj_getNodeEnergy(boardObj));
+        printf("node %i : %s, %i(%s), credit %i, energy %i\n", i, smmObj_getNodeName(boardObj), smmObj_getNodeType(boardObj), smmObj_getTypeName(smmObj_getNodeType(boardObj)), smmObj_getNodeCredit(boardObj), smmObj_getNodeEnergy(boardObj));
     
     //printf("(%s)", smmOhj_getTypeName(SMMMODE_TYPE_LECTURE)); 
     }
@@ -282,6 +330,7 @@ int main(int argc, const char * argv[]) {
     while ((player_nr<0) || (player_nr > MAX_PLAYER));
     
     //cur_player = (player_t*)malloc(player_nr*sizeof(player_t));
+    
     generatePlayers(player_nr, initEnergy);
     
     
@@ -310,3 +359,4 @@ int main(int argc, const char * argv[]) {
     system("PAUSE");
     return 0;
 }
+//smm List, smmGet data error로 불러올 수 없음.??? ->complie은 되나 돌아가지 않음.. 
