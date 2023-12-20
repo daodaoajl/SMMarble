@@ -59,18 +59,12 @@ typedef struct smmObject
        int  energy;  
        smmObjGrade_e grade;
 } smmObject_t;
-//
-
-//2. 구조체 배열 변수 정의
-//struct smmObject smm_node[MAX_NODE];
- 
-
 
 
 //object generation
-void smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, int energy, smmObjGrade_e grade)
+void* smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, int energy, smmObjGrade_e grade)
 {
-    smmObject_t* ptr;
+    smmObject_t *ptr;
     
     ptr = (smmObject_t*)malloc(sizeof(smmObject_t));
     
@@ -81,8 +75,7 @@ void smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, in
     ptr->energy = energy;
     ptr->grade = grade;
     
-//    return ptr;
-
+    return ptr;
 }
 
 //12/20 관련함수 변경 
@@ -115,3 +108,4 @@ int smmObj_getNodeGrade(void* Ptr)
     smmObject_t* ptr = (smmObject_t*)Ptr;
     return ptr->grade;    
 }
+

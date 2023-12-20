@@ -19,6 +19,7 @@
 #define SMMMODE_TYPE_MAX                7
 //유형의 문자열 
 
+
 typedef enum smmObjType
 {
         smmObjType_board = 0,
@@ -65,7 +66,7 @@ typedef enum smmObjGrade
 
 
 //object generation
-void smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, int energy, smmObjGrade_e grade);
+void* smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, int energy, smmObjGrade_e grade);
 
 //member retrieving
 char* smmObj_getNodeName(void* obj);//int node_nr -> void* obj 구조 맞춰줌(12/18) 
@@ -77,7 +78,6 @@ int smmObj_getNodeGrade(void* Ptr);
 //element to string
 
 char* smmObj_getTypeName(int type);
-//printgrade, rolldie, goforward, actionNode, getNodeName
 
 
 #endif /*smm_object_h*/
