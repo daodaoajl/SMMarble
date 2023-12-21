@@ -159,7 +159,7 @@ void actionNode(int player)
              {
                 int jod;//join or drop
                 char jd[3];
-                printf("%s, join or drop?",name);
+                printf("%s, join or drop?\n",name);
                 scanf("%s",&jd);
              
                 if(strcmp(jd,"join")==0)
@@ -167,7 +167,7 @@ void actionNode(int player)
                 else if(strcmp(jd,"drop")==-1)
                      {jod = 0;}
                 else
-                {    printf("%s, join or drop?",name);
+                {    printf("%s, join or drop?\n",name);
                      scanf("%s",&jd[3]);
                      fflush(stdin);
                 }
@@ -182,8 +182,11 @@ void actionNode(int player)
                        smmdb_addTail(LISTNO_OFFSET_GRADE + player, gradePtr);
                        //printf("%s successfully takes the lecture %s with grade %s(average : %f), remained energy : %i", cur_player[player].name, name, grade,/*average*/0,cur_player[player].energy);
                 }// energy가 노드의 energy보다 높을 때 실행 
-                else
-                       printf("you are too hungry to take the lecture %s(remained : %i, required: %i)",name,smmObj_getNodeEnergy(boardPtr),cur_player[player].energy);
+             }
+             else
+             {
+                printf("you are too hungry to take the lecture %s(remained : %i, required: %i\n)",name,smmObj_getNodeEnergy(boardPtr),cur_player[player].energy);
+                fflush(stdin);
              }
              break;  
              
@@ -191,19 +194,49 @@ void actionNode(int player)
         case SMMMODE_TYPE_RESTAURNAT:
              
              cur_player[player].energy += smmObj_getNodeEnergy(boardPtr); 
-             
-             break;
-             
+             //식당의 보충 에너지 만큼 플레이어의 현재 에너지 상태가 더해진다. 
+             rolldie(player);
+             fflush(stdin);
+             break;      
         //case laboratory     
         case SMMMODE_TYPE_LABORATORY:
-        //-> 실험 중 상태일 때
+        //-> 실험 중 상태일 때 주사위를 굴리고 성공 기준 값 이상 나오면 실험이 종료 그렇지 않으면 이동하지 못하고 머무름  
+             
+             if(type == SMMMODE_TYPE_EXPERIMENT)
+             {
+                       printf("Experiment time! Let's see if you can satisfy proessor (thereshold : 6)\n");
+                       
+                       int a; 
+                       
+                       srand((int)time(NULL));
+                       a=rand()%6;
+                       a=a+1;//a가 1~6까지의 값중 하나가 생성 된다. 
+                       //성공 기준값을 3으로 지정하여 do while문 작성  
+                       do
+                       {
+                              printf("-> Experiment result : %i, Fail T_T %s needs more experiment....\n",a,cur_player[player].name);      
+                       } 
+                       
+                       while(a<3);
+                              
+                       printf("-> Experiment result : %i, success! %s can exit this lab!\n",a,cur_player[player].name);
+                       rolldie(player);//실험실에서 나가기 
+              }
+              else//실험 상태가 아닐경우 그냥 지나감. 
+              {
+                       printf("This is not experiment time. You can go through this lab.\n");
+                       rolldie(player);
+              } 
          
         
              break;
+             
+
         case SMMMODE_TYPE_HOME:
-             if(1)
+             if(rolldie(player))
              {
-                                 
+                 cur_player[player].energy += smmObj_getNodeEnergy(boardPtr); 
+                 //지나갈때 보충 에너지 만큼 더해짐 
              }
              break;
         case SMMMODE_TYPE_EXPERIMENT:
@@ -224,6 +257,7 @@ void actionNode(int player)
                                  
              }
              break;
+//#endif
         default:
             break;            
     }
