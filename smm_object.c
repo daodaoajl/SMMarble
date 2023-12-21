@@ -12,6 +12,7 @@
 #define MAX_NODETYPE    7
 #define MAX_GRADE       9
 #define MAX_NODE        100
+#define MAX_FOOD        14
 
 static char smmNodeName[SMMMODE_TYPE_MAX][MAX_CHARNAME] = 
 {

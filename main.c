@@ -147,7 +147,7 @@ void actionNode(int player)
     char* name = smmObj_getNodeName(boardPtr);
     void* gradePtr;
     enum smmObjGrade grade;
-    grade = rand()%SMMMODE_GRADE_MAX+1;// grade random으로 출력 
+    grade = rand()%MAX_GRADE;// grade random으로 출력 
     
     switch(type)
     {
@@ -240,24 +240,28 @@ void actionNode(int player)
              }
              break;
         case SMMMODE_TYPE_EXPERIMENT:
-             if(1)
-             {
-                                 
-             }
+             //실험중 상태로 전환되면서 실험실로 이동한다.
+             type =  SMMMODE_TYPE_LABORATORY;
+
              break;
+#if 0
         case SMMMODE_TYPE_FOODCHANCE:
-             if(1)
+             if(type = SMMMODE_TYPE_RESTAURNAT)
              {
-                                 
+              //음식 카드 중 한장을 뽑고 보충된 에너지를 더함.
+              food = rand()%MAX_FOOD;     
+              printf("node %i : %s, energy %i\n", i, smmObj_getNodeName(boardObj), smmObj_getNodeEnergy(boardObj)); 
+              cur_player[player].energy +=  smmObj_getNodeEnergy(boardObj);              
              }
              break;
         case SMMMODE_TYPE_FESTIVAL:
-             if(1)
-             {
-                                 
-             }
+             //축제 카드 중 한 장을 랜덤으로 골라 미션 수행 
+              int fest;
+              festival = rand()%MAX_FESTIVAL;                   
+              printf("%s\n",smmObj_getNodeName(boardObj)); //축제카드 
+              scanf("%s\n", &fest);
              break;
-//#endif
+#endif
         default:
             break;            
     }

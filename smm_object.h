@@ -17,7 +17,11 @@
 #define SMMMODE_TYPE_FESTIVAL           6
 
 #define SMMMODE_TYPE_MAX                7
-#define SMMMODE_GRADE_MAX               9
+
+#define MAX_GRADE       9
+#define MAX_NODE        100
+#define MAX_FOOD        14
+
 //유형의 문자열 
 
 
