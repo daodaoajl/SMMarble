@@ -35,7 +35,6 @@ typedef struct player
 }player_t; 
 
 static player_t *cur_player; 
-//struct -> static으로 수정 
 
 //function prototypes
 #if 0
@@ -230,7 +229,7 @@ int main(int argc, const char * argv[]) {
     board_nr = 0;
     food_nr = 0;
     festival_nr = 0;
-    player_nr = 0;
+    
     
     srand(time(NULL));
     
@@ -333,27 +332,26 @@ int main(int argc, const char * argv[]) {
     
     do
     {
-        int player_nr;
-        
         //input player number to player_nr
         printf("input player no.:");
         scanf("%d", &player_nr);
         fflush(stdin);
     }
-    while (player_nr<0 || player_nr > MAX_PLAYER);
+    while ((player_nr<0) || (player_nr > MAX_PLAYER));
     
     cur_player = (player_t*)malloc(player_nr*sizeof(player_t));
     
+   
     generatePlayers(player_nr, initEnergy);// -> 함수 실행이 안됨. 
     
-    #if 0 
+     
     //3. SM Marble game starts ---------------------------------------------------------------------------------
     while (1) //is anybody graduated?
     {
         int die_result;
         
         //4-1. initial printing
-        printPlayerStatus(player_nr);
+        printPlayerStatus();
         
         //4-2. die rolling (if not in experiment)
         die_result = rolldie(turn);
@@ -367,7 +365,7 @@ int main(int argc, const char * argv[]) {
         //4-5. next turn
         turn = (turn +1)%player_nr;
     }
-    #endif
+    
     free(cur_player);
     system("PAUSE");
     return 0;
