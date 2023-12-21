@@ -17,6 +17,7 @@
 #define SMMMODE_TYPE_FESTIVAL           6
 
 #define SMMMODE_TYPE_MAX                7
+#define SMMMODE_GRADE_MAX               9
 //유형의 문자열 
 
 
